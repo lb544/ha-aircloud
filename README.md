@@ -1,5 +1,7 @@
 # (WIP) Home Assistant - Hitachi airCloud integration
 
+This component is a WIP for using Hitachi airCloud (Hitachi AC with WIFI module like SPX-WFGO2 to be used on Hitachi airCloud iOS / Android app) in HA
+
 ## Prerequisite
 1. You need the Dual Mode Generic Thermostat : https://github.com/zacs/ha-dualmodegeneric
 2. You need websocat binary on your installation : https://github.com/vi/websocat
