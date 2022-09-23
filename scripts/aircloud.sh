@@ -2,8 +2,7 @@
 
 hitachiuser=$(echo "<replace with your Hitachi's account email in base64>" | base64 -d)
 hitachipassword=$(echo "<replace with your Hitachi's account password in base64>" | base64 -d)
-websocatbinary="/opt/scripts/websocat.x86_64-unknown-linux-musl"
-
+wssairCloud="wss://notification-global-prod.aircloudhome.com/rac-notifications/websocket"
 
 uuid=$(curl -s https://www.uuidgenerator.net/api/version1)
 #uuid=$(uuidgen)
@@ -17,7 +16,7 @@ if [ "$2" == "" ]
 		:
 	else
 		roomName=$2
-		roomId=$(echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n wss://notification-global-prod.aircloudhome.com/rac-notifications/websocket | grep -a HITACHI | tr -d "\n" | jq -r ".data[] | select(.name==\"$roomName\") | .id")
+		roomId=$(echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n $wssairCloud | grep -a HITACHI | tr -d "\n" | jq -r ".data[] | select(.name==\"$roomName\") | .id")
 fi
 
 mode=$3
@@ -27,7 +26,7 @@ case "$1" in
 "on")
   now=$(date)
   #echo "ON at $now"  >> /opt/scripts/logs.txt
-  until [ $(echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n wss://notification-global-prod.aircloudhome.com/rac-notifications/websocket | grep -a HITACHI | tr -d "\n" | jq -r ".data[] | select(.id==$roomId) | .power") = "ON" ]
+  until [ $(echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n $wssairCloud | grep -a HITACHI | tr -d "\n" | jq -r ".data[] | select(.id==$roomId) | .power") = "ON" ]
   do
 	echo "ON $mode $temperature at $now"  >> /opt/scripts/logs.txt
 	curl -s -H "Authorization: Bearer $token" -H "Accept: application/json" -H "Content-Type: application/json; charset=UTF-8" -H "Host: api-global-prod.aircloudhome.com" -H "User-Agent: okhttp/4.2.2" --data-binary "{\"fanSpeed\":\"AUTO\",\"fanSwing\":\"BOTH\",\"humidity\":\"50\",\"id\":$roomId,\"iduTemperature\":$temperature.0,\"mode\":\"$mode\",\"power\":\"ON\"}" -X PUT --compressed "https://api-global-prod.aircloudhome.com/rac/basic-idu-control/general-control-command/$roomId?familyId=$familyId"
@@ -37,7 +36,7 @@ case "$1" in
 "off")
   now=$(date)
   #echo "OFF at $now" >> /opt/scripts/logs.txt
-  until [ $(echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n wss://notification-global-prod.aircloudhome.com/rac-notifications/websocket | grep -a HITACHI | tr -d "\n" | jq -r ".data[] | select(.id==$roomId) | .power") = "OFF" ]
+  until [ $(echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n $wssairCloud | grep -a HITACHI | tr -d "\n" | jq -r ".data[] | select(.id==$roomId) | .power") = "OFF" ]
   do
 	echo "OFF $mode $temperature at $now"  >> /opt/scripts/logs.txt
 	curl -s -H "Authorization: Bearer $token" -H "Accept: application/json" -H "Content-Type: application/json; charset=UTF-8" -H "Host: api-global-prod.aircloudhome.com" -H "User-Agent: okhttp/4.2.2" --data-binary "{\"fanSpeed\":\"AUTO\",\"fanSwing\":\"BOTH\",\"humidity\":\"50\",\"id\":$roomId,\"iduTemperature\":$temperature.0,\"mode\":\"$mode\",\"power\":\"OFF\"}" -X PUT --compressed "https://api-global-prod.aircloudhome.com/rac/basic-idu-control/general-control-command/$roomId?familyId=$familyId"
@@ -45,19 +44,19 @@ case "$1" in
   done
 ;;
 "powerstatus")
-	echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n wss://notification-global-prod.aircloudhome.com/rac-notifications/websocket | grep -a HITACHI | tr -d "\n" | jq -r ".data[] | select(.id==$roomId) | .power"
+	echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n $wssairCloud | grep -a HITACHI | tr -d "\n" | jq -r ".data[] | select(.id==$roomId) | .power"
 ;;
 "modestatus")
-	echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n wss://notification-global-prod.aircloudhome.com/rac-notifications/websocket | grep -a HITACHI | tr -d "\n" | jq -r ".data[] | select(.id==$roomId) | .mode"
+	echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n $wssairCloud | grep -a HITACHI | tr -d "\n" | jq -r ".data[] | select(.id==$roomId) | .mode"
 ;;
 "roomtemperature")
-	echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n wss://notification-global-prod.aircloudhome.com/rac-notifications/websocket | grep -a HITACHI | tr -d "\n" | jq -r ".data[] | select(.id==$roomId) | .roomTemperature"
+	echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n $wssairCloud | grep -a HITACHI | tr -d "\n" | jq -r ".data[] | select(.id==$roomId) | .roomTemperature"
 ;;
 "idutemperature")
-	echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n wss://notification-global-prod.aircloudhome.com/rac-notifications/websocket | grep -a HITACHI | tr -d "\n" | jq -r ".data[] | select(.id==$roomId) | .iduTemperature"
+	echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n $wssairCloud | grep -a HITACHI | tr -d "\n" | jq -r ".data[] | select(.id==$roomId) | .iduTemperature"
 ;;
 "websocatdebug")
-	echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n wss://notification-global-prod.aircloudhome.com/rac-notifications/websocket | grep -a HITACHI | tr -d "\n" | jq
+	echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n $wssairCloud | grep -a HITACHI | tr -d "\n" | jq
 ;;
 *)
 esac
