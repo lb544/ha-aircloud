@@ -82,7 +82,7 @@ switch:
 
 ```
 ## Home Assistant Result
-* [![HA Result](https://i.ibb.co/2Y1dg4C/HA-air-Cloud.png)](https://i.ibb.co/2Y1dg4C/HA-air-Cloud.png)
+* [![HA Result](https://i.ibb.co/NCFkZ4n/HA-air-Cloud.jpg)](https://i.ibb.co/NCFkZ4n/HA-air-Cloud.jpg)
 
 
 ## TODO LIST
