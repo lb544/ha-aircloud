@@ -1,0 +1,31 @@
+- platform: dualmode_generic
+  unique_id: thermostat_ac_chambre2
+  # Nom de notre thermostat
+  name: AC de la Chambre 2
+  # entité du chauffage
+  heater: switch.ac_chambre2_heater
+  cooler: switch.ac_chambre2_cooler
+  # entité du capteur de température
+  target_sensor: sensor.temperature_chambre_2
+  # la température réglable minimum du thermostat
+  min_temp: 16
+  # la température réglable maximum du thermostat
+  max_temp: 24
+  # mode de fonctionnement du système "heater"
+  #ac_mode: false
+  # la température cible
+  target_temp: 20
+  # il s'agit de la tolérance de température basse pour l'activation de la chauffe
+  cold_tolerance: 0
+  # tolérance de la température avant que la chauffe ne soit activer
+  hot_tolerance: 0.3
+  # il s'agit du mode dans lequel le thermostat démarre la première fois
+  initial_hvac_mode: "off"
+  reverse_cycle: cooler, heater, dryer, fan
+  # température en cas de mode absent
+  away_temp: 16
+  # Il s'agit de la précision pour le réglage de la température
+  precision: 1
+  # le temps minimum d'un cycle de fonctionnement
+  min_cycle_duration:
+    seconds: 30
