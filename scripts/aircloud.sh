@@ -1,7 +1,9 @@
 #!/bin/bash
 
 hitachiuser=$(echo "<replace with your Hitachi's account email in base64>" | base64 -d)
+#hitachiuser=<replace with your Hitachi's account email in plain text>
 hitachipassword=$(echo "<replace with your Hitachi's account password in base64>" | base64 -d)
+#hitachipassword="<replace with your Hitachi's account password in plain text>"
 websocatbinary="<replace with the path to websocat binary>"
 wssairCloud="wss://notification-global-prod.aircloudhome.com/rac-notifications/websocket"
 
