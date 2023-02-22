@@ -23,7 +23,7 @@ if [ "$2" = "" ]
 		roomName=$2
 		roomId=$(echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n $wssairCloud | grep -a HITACHI | tr -d "\n" | jq -r ".data[] | select(.name==\"$roomName\") | .id")
 		#echo "roomID : " $roomId
-		  while [[ -z "$roomId" ]]
+		  while [ -z "$roomId" ]
 		  do
 			roomId=$(echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n $wssairCloud | grep -a HITACHI | tr -d "\n" | jq -r ".data[] | select(.name==\"$roomName\") | .id")
 			#echo "roomID : " $roomId
@@ -39,7 +39,7 @@ case "$1" in
 "on")
   now=$(date)
   #echo "ON at $now"  >> /opt/scripts/logs.txt
-  if [[ -z "$roomId" ]]
+  if [ -z "$roomId" ]
   then
 	:
   else
@@ -47,7 +47,7 @@ case "$1" in
 	#until [[ $(echo $websocatresult | jq -r ".data[] | select(.id==$roomId) | .power") = "ON" ]]
 	until [ $(echo $websocatresult | jq -r ".data[] | select(.id==$roomId) | .power") = "ON" ] && [ $(echo $websocatresult | jq -r ".data[] | select(.id==$roomId) | .iduTemperature") -eq $(echo $temperature) ] && [ $(echo $websocatresult | jq -r ".data[] | select(.id==$roomId) | .fanSpeed") = $(echo $fanSpeed) ]
 	do
-		echo "ON $mode $temperature at $now"  >> /opt/scripts/logs.txt
+		#echo "ON $mode $temperature at $now"  >> /opt/scripts/logs.txt
 		curl -s -H "Authorization: Bearer $token" -H "Accept: application/json" -H "Content-Type: application/json; charset=UTF-8" -H "Host: api-global-prod.aircloudhome.com" -H "User-Agent: okhttp/4.2.2" --data-binary "{\"fanSpeed\":\"$fanSpeed\",\"fanSwing\":\"BOTH\",\"humidity\":\"50\",\"id\":$roomId,\"iduTemperature\":$temperature.0,\"mode\":\"$mode\",\"power\":\"ON\"}" -X PUT --compressed "https://api-global-prod.aircloudhome.com/rac/basic-idu-control/general-control-command/$roomId?familyId=$familyId"
 		sleep 20
 		websocatresult=$(echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n $wssairCloud | grep -a HITACHI | tr -d "\n")
@@ -57,13 +57,13 @@ case "$1" in
 "off")
   now=$(date)
   #echo "OFF at $now" >> /opt/scripts/logs.txt
-  if [[ -z "$roomId" ]]
+  if [ -z "$roomId" ]
   then
 	:
   else
 	until [ $(echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=2 -q -n $wssairCloud | grep -a HITACHI | tr -d "\n" | jq -r ".data[] | select(.id==$roomId) | .power") = "OFF" ]
 	do
-		echo "OFF $mode $temperature at $now"  >> /opt/scripts/logs.txt
+		#echo "OFF $mode $temperature at $now"  >> /opt/scripts/logs.txt
 		curl -s -H "Authorization: Bearer $token" -H "Accept: application/json" -H "Content-Type: application/json; charset=UTF-8" -H "Host: api-global-prod.aircloudhome.com" -H "User-Agent: okhttp/4.2.2" --data-binary "{\"fanSpeed\":\"$fanSpeed\",\"fanSwing\":\"BOTH\",\"humidity\":\"50\",\"id\":$roomId,\"iduTemperature\":$temperature.0,\"mode\":\"$mode\",\"power\":\"OFF\"}" -X PUT --compressed "https://api-global-prod.aircloudhome.com/rac/basic-idu-control/general-control-command/$roomId?familyId=$familyId"
 		sleep 20
 	done
