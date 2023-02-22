@@ -14,13 +14,14 @@ This component is a WIP for using Hitachi airCloud (Hitachi AC with WIFI module 
 <room> : Your room named like in your Hitachi airCloud app 
 <mode> : COOLING / HEATING / FAN
 <temperature> : Target temperature
+<fanspeed> : Target Fan Speed LV1 / LV2 / LV3 / LV4 / AUTO
 ```
 
 
 
 Example : 
 ```shell
-./airCloud.sh <action> <room> <mode> <temperature> 
+./airCloud.sh <action> <room> <mode> <temperature> <fanspeed>
 ```
 
 ## Installation (Manual)
@@ -55,9 +56,9 @@ switch:
          friendly_name: 'Heater Living Room'
          unique_id: switch_ac_living_room_heater
          command_on: >
-             sh /opt/scripts/aircloud.sh on Séjour HEATING 22
+             sh /opt/scripts/aircloud.sh on Séjour HEATING 22 AUTO
          command_off: >
-             sh /opt/scripts/aircloud.sh off Séjour HEATING 22
+             sh /opt/scripts/aircloud.sh off Séjour HEATING 22 AUTO
          command_state: >
              sh /opt/scripts/aircloud.sh powerstatus Séjour
          value_template: >
@@ -70,9 +71,9 @@ switch:
          friendly_name: 'Cooler Living Room'
          unique_id: switch_ac_living_room_cooler
          command_on: >
-             sh /opt/scripts/aircloud.sh on Séjour COOLING 22
+             sh /opt/scripts/aircloud.sh on Séjour COOLING 22 AUTO
          command_off: >
-             sh /opt/scripts/aircloud.sh off Séjour COOLING 22
+             sh /opt/scripts/aircloud.sh off Séjour COOLING 22 AUTO
          command_state: >
              sh /opt/scripts/aircloud.sh powerstatus Séjour
          value_template: >
