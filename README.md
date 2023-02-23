@@ -8,9 +8,9 @@ This component is a WIP for using Hitachi airCloud (Hitachi AC with WIFI module 
 
 ## airCloud.sh usage
 ```shell
-./airCloud.sh <action> <room> <mode> <temperature> 
+./airCloud.sh <action> <room> <mode> <temperature> <fanspeed>
 
-<action> : on (Power On) / off (Power Off) / powerstatus (AC Power Status) / modestatus (AC Mode Status) / roomtemperature (Room Temperature) / idutemperature (AC Thermostat Temperature) / websocatdebug (display Hitachi websocket full result in json)
+<action> : on (Power On) / off (Power Off) / powerstatus (AC Power Status) / modestatus (AC Mode Status) / roomtemperature (Room Temperature) / idutemperature (AC Thermostat Temperature) / websocatdebug (display Hitachi websocket full result in json) / websocatdebug (display Hitachi websocket full result with websocat in verbose mode)
 <room> : Your room named like in your Hitachi airCloud app 
 <mode> : COOLING / HEATING / FAN
 <temperature> : Target temperature
