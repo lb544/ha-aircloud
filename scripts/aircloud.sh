@@ -98,7 +98,7 @@ case "$1" in
 	echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=$pingtimeout -q -n $wssairCloud | grep -a HITACHI | tr -d "\n" | jq
 ;;
 "websocatdebug2")
-        echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=$pingtimeout -q -n $wssairCloud
+        echo $connectandsub | $websocatbinary -b --base64 --ping-timeout=$pingtimeout -n $wssairCloud
 ;;
 *)
 esac
